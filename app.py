@@ -2,6 +2,11 @@ import streamlit as st
 from apps import test_app, test2_app
 
 def main():
+    # 以下をサイドバーに表示
+    a = st.sidebar.text_input("文字入力欄") #引数に入力内容を渡せる
+
+
+
     # Streamlit が対応している任意のオブジェクトを可視化する (ここでは文字列)
     st.write('Hello, World!')
     st.title("hello")
@@ -14,8 +19,8 @@ def main():
     # st.text_input("文字入力欄") #引数に入力内容を渡せる
 
 
-    test_app.app()
-    test2_app.app()
+    # test_app.app()
+    # test2_app.app()
 
 if __name__ == '__main__':
     main()
