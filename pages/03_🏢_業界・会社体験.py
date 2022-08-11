@@ -6,7 +6,6 @@ from matplotlib import pyplot as plt
 from PIL import Image
 import csv
 
-
 from apps import generate_question
 
 def main():
@@ -15,10 +14,6 @@ def main():
     with open(path_additional_questions, 'r', encoding='utf_8') as csv_file:
         csv_reader = csv.reader(csv_file)
         additional_question_list = list(csv_reader)
-    # print(additional_question_list)
-    # print(additional_question_list[0])
-    # print(additional_question_list[0][0])
-
 
     # アンケートの結果を格納する
     if 'user_questionnaire_results' not in st.session_state:
@@ -80,7 +75,6 @@ def main():
                     st.write('その他の業界には，現在対応していません．対応するまでお待ちください．')
                 st.image(image, caption='業界体験ゲーム',use_column_width=True)
 
-        #TODO: VRを作成し，体験できるようにする
         elif experience == "業界の実際の様子をVRを通じて体験する":
             st.write('業界の実際の様子をVRを通じて体験しよう！')
             st.write('業界を選択してください．あなたに個人最適化された評価軸順に業界は並んでいます')
@@ -91,7 +85,6 @@ def main():
             if industry != "未選択":
                 message = "ゲームを通じて" + industry + "業界の体験をしよう"
                 st.write(message)
-                #TODO: 写真を動画に差し替える
                 # 注：全てインターンシップなどで使用しても良い写真を使っています．
                 if industry == "Education":
                     image = Image.open('data/education.png')

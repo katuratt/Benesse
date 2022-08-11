@@ -11,18 +11,11 @@ import altair as alt
 from vega_datasets import data
 import random
 
-
 def main():
-    # アンケートの結果を格納する
-    if 'user_questionnaire_results' not in st.session_state:
-        st.session_state['user_questionnaire_results'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     if 'personalized_user_information' not in st.session_state:
         st.session_state['personalized_user_information'] = {"x": 0, "y": 0, "size": 0}
     if 'num' not in st.session_state:
         st.session_state['num'] = 0
-    #  アンケート結果を格納する
-    if 'additional_user_questionnaire_results' not in st.session_state:
-        st.session_state['additional_user_questionnaire_results'] =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     if 'submit_results' not in st.session_state:
         st.session_state['submit_results'] = False
     if 'display_times' not in st.session_state:
@@ -31,30 +24,17 @@ def main():
         st.session_state['radar_list'] = []
 
     st.title('カテゴライズ')
+    st.write('個人最適化された自己分析手法をもとに，あなたをカテゴライズしました．')
+    st.write('あなたの円の中に入っている企業が，個人最適化された評価軸で最適とされた企業です．')
+    st.write('あなたの円が大きい場合は，自己分析を進めて，あなたの円を小さくしていきましょう．')
 
     # 会社データの読み込み
-    path_company_data = 'company_data.csv'
+    path_company_data = 'data/company_data.csv'
     df = pd.read_csv(path_company_data)
 
     # 自身のデータを表示
     #Takuyaはユーザ名
-    user_data = {'industry':'you','company_name':'Takuya','x':0,'y':0,'employee_number':0,'sales':0,'recommendation':350}
-
-    #TODO:大きさをを変化させる
-    # you["recommendation"] = 100
-
-    df_user = df.append(user_data, ignore_index=True)
-    # print("aaaaaaaaa")
-    # print(df_user)
-
-
-
-    #TODO: データの書き換え
-
-
-
-
-
+    user_data = {'industry':'you','company_name':'Takuya','x':300,'y':200,'employee_number':0,'sales':0,'recommendation':350}
 
 
     #TODO:業種選択画面作成
@@ -65,24 +45,6 @@ def main():
 
     # company_name=st.text_input('会社名')
     # personal_name = st.text_input('産業', '教育')
-
-
-
-    st.sidebar.title('軸の設定')
-    # xmin=st.sidebar.number_input('x最小値：',0,500,300)
-    # xmax=st.sidebar.number_input('x最大値：',0,1000,400)
-    # ymin=st.sidebar.number_input('y最小値：',0,500,200)
-    # ymax=st.sidebar.number_input('y最大値：',0,1000,300)
-    xmin = user_data['x']-500
-    xmax = user_data['x']+500
-    ymin = user_data['y']-500
-    ymax = user_data['y']+500
-
-    fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=user_data['recommendation'])
-
-
-
-
 
 
     # TODO:業種・会社選択用
@@ -115,12 +77,33 @@ def main():
     #     opacity=0.8
     #     )
 
-    user_data['x'] += 10
-    user_data['y'] += 10
+
+    st.sidebar.title('軸の設定')
+    xmin = 0
+    xmax = 1000
+    ymin = 0
+    ymax = 1000
+
+    # 本来は多次元空間の情報を2次元に落とすことで，ユーザの円の位置，半径の大きさを決定する
+    # ここでは，それっぽい機能だけ作成する
+    # フィードバックのデータの数を調べる
+    feedbacked_info_number = 0
+    # 自己分析からのフィードバック数を調べる
+    if 'user_questionnaire_results' in st.session_state:
+        for i in st.session_state['user_questionnaire_results']:
+            if i != 0:
+                feedbacked_info_number += 1
+    # 会社体験からのフィードバック数を調べる
+    if 'additional_user_questionnaire_results' in st.session_state:
+        for i in st.session_state['additional_user_questionnaire_results']:
+            if i != 0:
+                feedbacked_info_number += 1
+
+    #TODO:大きさの調節
+    user_data['x'] = (700 - user_data['x']) / (feedbacked_info_number + 1)
+    user_data['y'] = user_data['y'] + feedbacked_info_number **2 + feedbacked_info_number * 20
+    user_data["recommendation"] = max(400 - feedbacked_info_number **2, 100) - feedbacked_info_number * 7
     df_user = df.append(user_data, ignore_index=True)
-    user_data["recommendation"] -= 10
-    if user_data['recommendation'] < 20:
-        user_data["recommendation"] = 20
     fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=user_data['recommendation'])
     st.plotly_chart(fig, use_container_width=True)
 
