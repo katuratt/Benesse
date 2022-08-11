@@ -12,14 +12,6 @@ from vega_datasets import data
 import random
 
 def main():
-    if 'personalized_user_information' not in st.session_state:
-        st.session_state['personalized_user_information'] = {"x": 0, "y": 0, "size": 0}
-    if 'num' not in st.session_state:
-        st.session_state['num'] = 0
-    if 'submit_results' not in st.session_state:
-        st.session_state['submit_results'] = False
-    if 'display_times' not in st.session_state:
-        st.session_state['display_times'] = 0
     if 'radar_list' not in st.session_state:
         st.session_state['radar_list'] = []
 
@@ -91,18 +83,25 @@ def main():
     # 自己分析からのフィードバック数を調べる
     if 'user_questionnaire_results' in st.session_state:
         for i in st.session_state['user_questionnaire_results']:
-            if i != 0:
+            print(i)
+            if i != 1 and i != 0:
                 feedbacked_info_number += 1
+        print("aaaaaaaaaa")
+        print(feedbacked_info_number)
     # 会社体験からのフィードバック数を調べる
     if 'additional_user_questionnaire_results' in st.session_state:
         for i in st.session_state['additional_user_questionnaire_results']:
-            if i != 0:
+            if i != 0 and i != 1:
                 feedbacked_info_number += 1
+        print("bbbbbbbbbb")
+        print(feedbacked_info_number)
+    print("cccccccccc")
+    print(feedbacked_info_number)
 
     #TODO:大きさの調節
-    user_data['x'] = (700 - user_data['x']) / (feedbacked_info_number + 1)
-    user_data['y'] = user_data['y'] + feedbacked_info_number **2 + feedbacked_info_number * 20
-    user_data["recommendation"] = max(400 - feedbacked_info_number **2, 100) - feedbacked_info_number * 7
+    user_data['x'] = 350
+    user_data['y'] = 400
+    user_data["recommendation"] = 300
     df_user = df.append(user_data, ignore_index=True)
     fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=user_data['recommendation'])
     st.plotly_chart(fig, use_container_width=True)
