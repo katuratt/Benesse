@@ -1,2 +1,2 @@
-first_name,last_name,first_name_katakana,last_name_katakana,age,gender,university,faculty,department,"expected_to_graduate_year",expected_to_graduate_month,email,phone_number,0
-たくや,宮崎,タクヤ,ミヤザキ,21,男,Benesse大学,Benesse学部,Benesse学科,"24",3,Benesse@benesse.jp,000-000-000,expected_to_graduate
+first_name,last_name,first_name_katakana,last_name_katakana,age,gender,university,faculty,department,"expected_to_graduate_year",expected_to_graduate_month,expected_to_graduate,email,phone_number,birth_year,birth_month,birth_day,postal_code,address
+たくや,宮崎,タクヤ,ミヤザキ,21,0,Benesse大学,Benesse学部,Benesse学科,"24",3,0,Benesse@benesse.jp,000-000-000,2001,1,1,111-111,東京都hoge区hoge

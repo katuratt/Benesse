@@ -5,6 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image
 import csv
+from datetime import date
 
 from apps import generate_question
 
@@ -108,40 +109,33 @@ def main():
 
             company_name = st.selectbox('企業選択',("未選択",company_list[0], company_list[1],company_list[2], company_list[3],company_list[4], company_list[5]), key="33", index=0)
             if company_name != "未選択":
-                message = company_name + "のインターンシップに応募しますか？"
-                option_internship = st.radio(message, ("応募しない", "応募する"), index=0, key= 34, horizontal=True)
-                if option_internship == "応募する":
-                    #csvよりデータを取得
-                    path_user_data = "data/user_data.csv"
-                    with open(path_user_data, newline='', encoding='utf_8') as f:
-                        reader = csv.DictReader(f)
-                        user_data_list = [row for row in reader]
-                    # print(user_data_list[0])
-                    # print("sssss")
-                    # print(type(user_data_list[0]))
-                    # print(user_data_list[0].keys())
-                    # print(user_data_list[0]['last_name'])
+                #csvよりデータを取得
+                path_user_data = "data/user_data.csv"
+                with open(path_user_data, newline='', encoding='utf_8') as f:
+                    reader = csv.DictReader(f)
+                    user_data_list = [row for row in reader]
+                # print(user_data_list)
 
-                    # インターンシップの応募
-                    #TODO: もっとイケてるUIにして，情報を増やす
-                    internship_name = company_name + "  User-Based Digital Competition"
-                    st.title(internship_name)
-                    st.write('お名前')
-                    st.write('漢字氏名  姓: ' + user_data_list[0]['last_name'] + ' 名: ' + user_data_list[0]['first_name'])
-                    st.write('カナ氏名  セイ: ' + user_data_list[0]['last_name_katakana'] + ' メイ: ' + user_data_list[0]['first_name_katakana'])
-                    st.write('生年月日・性別')
+                # インターンシップの応募
+                internship_name = company_name + "  User-Based Digital Competition"
+                st.title(internship_name)
+                st.text_input(label='漢字氏名', value=user_data_list[0]['last_name'] + user_data_list[0]['first_name'])
+                st.text_input(label='カナ指名', value=user_data_list[0]['last_name_katakana'] + user_data_list[0]['first_name_katakana'])
+                st.date_input('生年月日',min_value=date(1900, 1, 1),max_value=date.today(),value=date(int(user_data_list[0]['birth_year']), int(user_data_list[0]['birth_month']), int(user_data_list[0]['birth_day']),))
+                st.radio("性別", ("男", "女", "その他"), index=int(user_data_list[0]['gender']), key= 34, horizontal=True)
+                st.text_input(label='メールアドレス', value=user_data_list[0]['email'])
+                st.text_input(label='電話番号', value=user_data_list[0]['phone_number'])
+                st.text_input(label='郵便番号', value=user_data_list[0]['postal_code'])
+                st.text_input(label='住所', value=user_data_list[0]['address'])
+                st.text_input(label='最終学歴', value=user_data_list[0]['university'] + user_data_list[0]['faculty'] + user_data_list[0]['department'])
 
-                    st.write('メールアドレス: ' + user_data_list[0]['email'])
-                    st.write('電話番号: ' + user_data_list[0]['phone_number'])
-
-                    st.write('最終学歴')
-                    st.write('大学名: ' + user_data_list[0]['university'])
-                    st.write('学部名: ' + user_data_list[0]['faculty'])
-                    st.write('学科名: ' + user_data_list[0]['department'])
-
+                option_internship = st.button("応募する", key = 36)
+                if option_internship:
+                    st.session_state['submit_results'] = True
+                    st.session_state['additional_user_questionnaire_results'].append(company_name)
 
     # 体験のフィードバック
-    if experience != "未選択":
+    if experience != "未選択" and experience != "企業の実際の様子をインターンシップを通じて体験する":
         # print("1false1")
         quit_experience = st.checkbox("体験を途中でやめる", key="35")
         # 体験のフィードバックを得る
