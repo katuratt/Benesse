@@ -113,7 +113,6 @@ def main():
                 with open(path_user_data, newline='', encoding='utf_8') as f:
                     reader = csv.DictReader(f)
                     user_data_list = [row for row in reader]
-                # print(user_data_list)
 
                 # インターンシップの応募
                 internship_name = company_name + "  User-Based Digital Competition"

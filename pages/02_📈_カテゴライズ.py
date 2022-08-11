@@ -29,47 +29,23 @@ def main():
     user_data = {'industry':'you','company_name':'Takuya','x':300,'y':200,'employee_number':0,'sales':0,'recommendation':350}
 
 
-    #TODO:業種選択画面作成
-    # st.write('検索')
-    # industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
-    # company_name = st.selectbox('業界選択',("未選択",industry_list[0], industry_list[1],industry_list[2], industry_list[3],industry_list[4], industry_list[5]), key="3", index=0)
+    #業種を選ぶと，その業種のみを表示する
+    #会社名を入力すると，その会社にラベルをつけて表示させることができる．
+    industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
+    industry = st.selectbox('業界選択',("未選択",industry_list[0], industry_list[1],industry_list[2], industry_list[3],industry_list[4], industry_list[5]), key="3", index=0)
+    company_name=st.text_input('会社名検索')
+    print(company_name)
+
+    # 業界・会社選択することで，表示するバブルを指定できる
+    if industry != '未選択':
+        df = df[df['industry'] == industry]
+    if len(company_name) != 0:
+        df_ = df[df['company_name'] == company_name]
+        if len(df_) == 0:
+            st.write('入力した会社名が間違っています．')
 
 
-    # company_name=st.text_input('会社名')
-    # personal_name = st.text_input('産業', '教育')
-
-
-    # TODO:業種・会社選択用
-    # company_name = 'ukf'
-    # df_user_ano=df_user[df_user['company_name'] == company_name]#表示するバブルの指定
-    # print(df_user_ano)
-    # fig.add_annotation(
-    #     x=df_user_ano.iloc[0,2],
-    #     y=df_user_ano.iloc[0,3],
-    #     xref="x",
-    #     yref="y",
-    #     text=company_name,
-    #     showarrow=True,
-    #     font=dict(
-    #         family="Courier New, monospace",
-    #         size=22,
-    #         color="#ffffff"
-    #         ),
-    #     align="center",
-    #     arrowhead=2,
-    #     arrowsize=1,
-    #     arrowwidth=2,
-    #     arrowcolor="#636363",
-    #     ax=20,
-    #     ay=-30,
-    #     bordercolor="#c7c7c7",
-    #     borderwidth=2,
-    #     borderpad=4,
-    #     bgcolor="#ff7f0e",
-    #     opacity=0.8
-    #     )
-
-
+    #散布図を書く
     st.sidebar.title('軸の設定')
     xmin = 0
     xmax = 1000
@@ -86,26 +62,49 @@ def main():
             print(i)
             if i != 1 and i != 0:
                 feedbacked_info_number += 1
-        print("aaaaaaaaaa")
-        print(feedbacked_info_number)
     # 会社体験からのフィードバック数を調べる
     if 'additional_user_questionnaire_results' in st.session_state:
         for i in st.session_state['additional_user_questionnaire_results']:
             if i != 0 and i != 1:
                 feedbacked_info_number += 1
-        print("bbbbbbbbbb")
-        print(feedbacked_info_number)
-    print("cccccccccc")
-    print(feedbacked_info_number)
 
-    #TODO:大きさの調節
+    #フィードバックに従い，円の大きさが変化する
     user_data['x'] = min(200 + (feedbacked_info_number ** 2) * 10, 550)
     user_data['y'] = min(150 + feedbacked_info_number * 30, 400)
     user_data["recommendation"] = max(30, 750 - feedbacked_info_number * 100)
     df_user = df.append(user_data, ignore_index=True)
     fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=user_data['recommendation'])
-    st.plotly_chart(fig, use_container_width=True)
 
+
+    # 会社名検索を行った際は，その会社にラベルをつけて表示する
+    if len(company_name) != 0 and len(df[df['company_name'] == company_name]) != 0:
+        fig.add_annotation(
+            x=df_user.iloc[0,2],
+            y=df_user.iloc[0,3],
+            xref="x",
+            yref="y",
+            text=company_name,
+            showarrow=True,
+            font=dict(
+                family="Courier New, monospace",
+                size=22,
+                color="#ffffff"
+                ),
+            align="center",
+            arrowhead=2,
+            arrowsize=1,
+            arrowwidth=2,
+            arrowcolor="#636363",
+            ax=20,
+            ay=-30,
+            bordercolor="#c7c7c7",
+            borderwidth=2,
+            borderpad=4,
+            bgcolor="#ff7f0e",
+            opacity=0.8
+            )
+
+    st.plotly_chart(fig, use_container_width=True)
 
     #レーダーチャートの表示
     st.title('個人最適化された評価軸')
@@ -122,7 +121,6 @@ def main():
         for j in range(len(theta_list)):
             if theta_list[j] in i:
                 radar_list[j] = 5.0
-
     df = pd.DataFrame(dict(r=radar_list, theta=theta_list))
     fig_radar = px.line_polar(df, r='r', theta='theta', line_close=True)
     st.plotly_chart(fig_radar, use_container_width=True)
