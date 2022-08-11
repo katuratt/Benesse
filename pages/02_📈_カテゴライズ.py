@@ -51,15 +51,13 @@ def main():
     #TODO:業種選択画面作成
     # st.write('検索')
     # industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
-    # company_name = st.selectbox('業種',("未設定",industry_list[0], industry_list[1],industry_list[2], industry_list[3],industry_list[4], industry_list[5]), key="3", index=0)
+    # company_name = st.selectbox('業界選択',("未選択",industry_list[0], industry_list[1],industry_list[2], industry_list[3],industry_list[4], industry_list[5]), key="3", index=0)
 
 
     # company_name=st.text_input('会社名')
     # personal_name = st.text_input('産業', '教育')
 
-    company_name = 'ukf'
-    df_user_ano=df_user[df_user['company_name'] == company_name]#表示するバブルの指定
-    print(df_user_ano)
+
 
     st.sidebar.title('軸の設定')
     # xmin=st.sidebar.number_input('x最小値：',0,500,300)
@@ -75,6 +73,10 @@ def main():
 
 
 
+
+    company_name = 'ukf'
+    df_user_ano=df_user[df_user['company_name'] == company_name]#表示するバブルの指定
+    print(df_user_ano)
 
     # TODO:業種・会社選択用
     # fig.add_annotation(
@@ -120,6 +122,31 @@ def main():
         additional_data = np.random.random(size=(5, 2))
         line_chart.add_rows(additional_data)
         time.sleep(0.5)
+    # #TODO 時系列変化するグラフの参考2
+    # # 折れ線グラフに 0.5 秒間隔で 10 回データを追加する
+    # for i in range(10):
+    #     # グラフを消去する
+    #     ax.clear()
+    #     # データを追加する
+    #     additional_data = np.random.normal(loc=.0, scale=1., size=(10,))
+    #     x = np.concatenate([x, additional_data])
+    #     # グラフを描画し直す
+    #     ax.plot(x)
+    #     # プレースホルダに書き出す
+    #     plot_area.pyplot(fig)
+    #     time.sleep(0.2)
+
+
+
+
+
+    #レーダーチャートの表示
+    #TODO: フィードバックにより，変化させる
+    st.title('個人最適化された評価軸')
+    st.write('値が大きな軸があなたに最適な評価軸です．')
+    df = pd.DataFrame(dict(r=[3, 2, 2, 4, 1], theta=['やりがい','裁量権','成長環境','企画力', '福利厚生']))
+    fig_radaer = px.line_polar(df, r='r', theta='theta', line_close=True)
+    st.plotly_chart(fig_radaer, use_container_width=True)
 
 
 

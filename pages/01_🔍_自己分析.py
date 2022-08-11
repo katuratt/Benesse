@@ -3,29 +3,30 @@ import streamlit as st
 def main():
     st.title('自己分析をしよう!')
     st.write('自分の当てはまる項目を選んでください．途中で簡単に抜けることもできます')
-    a1 = st.radio("どちらの方が嬉しいか？", ("褒められるとき", "尊敬されたとき", "頼りにされたとき"), key="1") #第一引数：リスト名（選択肢群の上に表示）、第二引数：選択肢
-    a1 = st.radio("どちらの方が悲しいか？", ("貶されたとき", "怒られたとき", "一人になったとき"), key="5", index=2, horizontal=True) #第一引数：リスト名（選択肢群の上に表示）、第二引数：選択肢
 
-    print(a1)
-    # print(a2)
-
+    #TODO: 質問を増やす
 
     # アンケートの結果を格納する
-    option = []
+    if 'option_list' not in st.session_state:
+        st.session_state['option_list'] = [0,0,0,0]
 
-    option1 = (st.selectbox('どちらの方が嬉しいか？',("未設定", "尊敬されたとき", "頼りにされたとき"), key="2"))
-    st.write('You selected:', option1)
-    option.append(option1)
+    # i問目の質問
+    i = 0
+    option0_list = ["未選択", "尊敬されたとき", "頼りにされたとき"]
+    option0 = (st.selectbox('どれが嬉しいか？',(option0_list[0], option0_list[1], option0_list[2]), key=i, index=st.session_state['option_list'][i]))
+    st.write('You selected:', option0)
+    st.session_state['option_list'][i] = option0_list.index(option0)
+    print(option0)
 
-    option2 = st.selectbox('どちらの方が嬉しいか？',("未設定", "貶されたとき","尊敬されたとき", "頼りにされたとき"), key="3", index=1)
-    st.write('You selected:', option2)
-    option.append(option2)
+    i = 1
+    option_list = ["未選択", "尊敬されたとき", "頼りにされたとき"]
+    option = (st.selectbox('どれが嬉しいか？',(option_list[0], option_list[1], option_list[2]), key=i, index=st.session_state['option_list'][i]))
+    st.session_state['option_list'][i] = option_list.index(option)
 
-
-    print("aaaaaaaaaa")
-    # print(option2)
-    print(option)
-
+    i = 2
+    option_list = ["未選択", "尊敬されたとき", "頼りにされたとき"]
+    option = (st.selectbox('どれが嬉しいか？',(option_list[0], option_list[1], option_list[2]), key=i, index=st.session_state['option_list'][i]))
+    st.session_state['option_list'][i] = option_list.index(option)
 
 
 
