@@ -1,14 +1,14 @@
 import streamlit as st
 
 def main():
+    # アンケートの結果を格納する
+    if 'option_list' not in st.session_state:
+        st.session_state['option_list'] = [0,0,0,0]
+
     st.title('自己分析をしよう!')
     st.write('自分の当てはまる項目を選んでください．途中で簡単に抜けることもできます')
 
     #TODO: 質問を増やす
-
-    # アンケートの結果を格納する
-    if 'option_list' not in st.session_state:
-        st.session_state['option_list'] = [0,0,0,0]
 
     # i問目の質問
     i = 0

@@ -131,33 +131,6 @@ def main():
                     st.write('学科名: ' + user_data_list[0]['department'])
 
 
-
-
-
-    # # 体験のフィードバック
-    # if st.session_state['experience_feedback'] == False and experience != "未選択":
-    #     print("0false0")
-    #     st.session_state['experience_feedback'] = st.checkbox("体験を途中でやめる", key="302")
-    # # 体験のフィードバックを得る
-    # if st.session_state['experience_feedback']:
-    #     st.title('業界・会社体験を評価しよう')
-    #     st.write('以下の質問に答え，自己分析の精度を高めよう．')
-
-    #     if 'experience_feedback_option' not in st.session_state:
-    #         st.session_state['experience_feedback_option'] = [0,0,0]
-
-    #     option_list = ["未選択", "就職したくなった", "少し就職したくなった", "変わらなかった", "少し就職したくなくなった", "就職したくなくなった"]
-    #     option= st.selectbox('体験を通じて本業界・企業に就職したいという思いは強くなりましたか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4]), key="300", index=st.session_state['experience_feedback_option'][0])
-    #     st.session_state['experience_feedback_option0'] = option_list.index(option)
-
-    #     #TODO: 質問を増やす
-
-    #     st.session_state['experience_feedback'] = st.checkbox("上記内容で自己分析を提出する", key="301")
-    #     print(st.session_state['experience_feedback'])
-
-
-
-    # st.checkbox("ここより下", key="3000")
     # 体験のフィードバック
     if experience != "未選択":
         # print("1false1")
@@ -196,15 +169,6 @@ def main():
         change_to_false = st.checkbox(message, key="300001", disabled=display)
         if change_to_false:
             st.session_state['submit_results'] = False
-
-
-        # if st.session_state['display_times'] == 0:
-        #     change_to_false = st.checkbox("本当に提出してよろしいですか", key="300001")
-        #     st.session_state['display_times'] = 1
-        # if change_to_false:
-        #     st.session_state['submit_results'] = False
-        #     st.session_state['display_times'] = 0
-
 
 if __name__ == '__main__':
     main()

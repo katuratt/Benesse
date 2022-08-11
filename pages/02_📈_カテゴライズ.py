@@ -5,21 +5,49 @@ import numpy as np
 from matplotlib import pyplot as plt
 import pandas as pd
 from sklearn.datasets import load_boston
-# import seaborn as sns
 import csv
 
 import plotly.graph_objects as go
 
 
+import altair as alt
+from vega_datasets import data
+# import math
+# import matplotlib.animation as animation
+
+# import streamlit.components.v1 as components
+
 
 def main():
+
+    # 消去予定
+    # source = data.cars()
+    chart = st.empty()
+    # print("Hello, world!")
+    # print(source.index)
+
+
+
+
+
+
+
+
+    if 'personalized_user_information' not in st.session_state:
+        st.session_state['personalized_user_information'] = {"x": 0, "y": 0, "size": 0}
+    if 'num' not in st.session_state:
+        st.session_state['num'] = 0
+    #  アンケート結果を格納する
+    if 'user_questionnaire_results' not in st.session_state:
+        st.session_state['user_questionnaire_results'] = {}
+
     st.title('カテゴライズ')
 
     path_company_data = 'company_data.csv'
     df = pd.read_csv(path_company_data)
 
-    print(df)
-    print(type(df))
+    # print(df)
+    # print(type(df))
 
 
     # 自身のデータを表示
@@ -30,8 +58,8 @@ def main():
     # you["recommendation"] = 100
 
     df_user = df.append(you, ignore_index=True)
-    print("aaaaaaaaa")
-    print(df_user)
+    # print("aaaaaaaaa")
+    # print(df_user)
 
 
 
@@ -74,11 +102,12 @@ def main():
 
 
 
-    company_name = 'ukf'
-    df_user_ano=df_user[df_user['company_name'] == company_name]#表示するバブルの指定
-    print(df_user_ano)
+
 
     # TODO:業種・会社選択用
+    # company_name = 'ukf'
+    # df_user_ano=df_user[df_user['company_name'] == company_name]#表示するバブルの指定
+    # print(df_user_ano)
     # fig.add_annotation(
     #     x=df_user_ano.iloc[0,2],
     #     y=df_user_ano.iloc[0,3],
@@ -105,10 +134,146 @@ def main():
     #     opacity=0.8
     #     )
 
-    st.plotly_chart(fig, use_container_width=True)
+
+# df_user = df.append(you, ignore_index=True)
+# fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=you['recommendation'])
+
+    # x = alt.Chart(df_user).mark_circle(size=100).encode(x='x', y='y', color='industry').interactive()
+    # chart.altair_chart(x, use_container_width=True)
 
 
 
+
+
+
+
+    # fig = plt.figure()
+
+    # # Fixing random state for reproducibility
+    # np.random.seed(19680801)
+
+    # data = np.random.rand(2, 25)
+    # l, = plt.plot([], [], 'r-')
+    # plt.xlim(0, 1)
+    # plt.ylim(0, 1)
+    # plt.xlabel('x')
+    # plt.title('test')
+    # line_ani = animation.FuncAnimation(fig, update_line, 25, fargs=(data, l), interval=50, blit=True)
+    # components.html(line_ani.to_jshtml(), height=1000)
+
+
+
+
+
+
+
+
+
+
+
+
+    you = {'industry':'you','company_name':'Takuya','x':0,'y':0,'employee_number':0,'sales':0,'recommendation':350}
+    df_user = df.append(you, ignore_index=True)
+    for q in range(10):
+        you["x"] += 10*q
+        you["y"] += 10*q
+        you["recommendation"] += 10*q
+        df_user = df_user.append(you, ignore_index=True)
+
+    # for i in df_user.index:
+    #     if i <= len(df):
+    #         data_to_be_added = df_user.iloc[0: i + 1, :]
+    #         x = alt.Chart(data_to_be_added).mark_circle(size=100).encode(x='x', y='y', color='industry').interactive()
+    #         print(i)
+    #         chart.altair_chart(x, use_container_width=True)
+    #     else:
+    #         data_to_be_added = df_user.iloc[0: i + 1, :]
+    #         x = alt.Chart(data_to_be_added).mark_circle(size=1000).encode(x='x', y='y', color='industry').interactive()
+    #     chart.altair_chart(x, use_container_width=True)
+
+
+
+
+    print(df_user.index)
+    print(type(df_user.index))
+    print("aaaaaaaaaaaaaaaa")
+    print(len(df_user))
+    for i in df_user.index:
+        data_to_be_added = df_user.iloc[0: i + 1, :]
+        x = alt.Chart(data_to_be_added).mark_circle(size=1000).encode(x='x', y='y', color='industry').interactive()
+        time.sleep(0.2)
+        chart.altair_chart(x, use_container_width=True)
+
+
+
+
+
+
+    # for p in range(10):
+    #     # 0.1 秒間隔で データを書き換える
+    #     you["x"] += 10 * p
+    #     you["y"] += 10 * p
+    #     you["recommendation"] -= 10 * i
+    #     if you['recommendation'] < 20:
+    #         you["recommendation"] = 20
+    #     df_user = df.append(you, ignore_index=True)
+    #     fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=you['recommendation'])
+    #     scatter_chart = st.plotly_chart(fig, use_container_width=True)
+    #     time.sleep(0.1)
+
+    # for i in range(10):
+    #     st.session_state['num'] = i
+    #     you['x'] += st.session_state['num'] * 10
+    #     you['y'] += st.session_state['num'] * 10
+    #     df_user = df.append(you, ignore_index=True)
+    #     you["recommendation"] -= 10 * i
+    #     if you['recommendation'] < 20:
+    #         you["recommendation"] = 20
+
+    #     fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=you['recommendation'])
+    #     scatter_chart = st.plotly_chart(fig, use_container_width=True)
+    #     time.sleep(0.1)
+
+
+    # x = alt.Chart(df_user).mark_circle(size=100).encode(x='x', y='y', color='industry').interactive()
+    # chart.altair_chart(x, use_container_width=True)
+
+    # for i in source.index:
+    #     data_to_be_added = source.iloc[0: i + 1, :]
+    #     # print(data_to_be_added)
+    #     print(type(data_to_be_added))
+    #     # print("aaaaaaaaaaaaaaaaaa")
+
+    #     x = alt.Chart(data_to_be_added).mark_circle(size=i * 10).encode(
+    #         x='Horsepower',
+    #         y='Miles_per_Gallon',
+    #         color='Origin',
+    #         # tooltip=['Name', 'Origin', 'Horsepower', 'Miles_per_Gallon']
+    #     ).interactive()
+
+    #     time.sleep(0.2)
+
+    #     chart.altair_chart(x)
+
+
+
+
+
+
+
+
+    # scatter_chart = st.plotly_chart(fig, use_container_width=True)
+    # for i in range(10):
+    #     st.session_state['num'] = i
+    #     you['x'] += st.session_state['num'] * 10
+    #     you['y'] += st.session_state['num'] * 10
+    #     df_user = df.append(you, ignore_index=True)
+    #     you["recommendation"] -= 10 * i
+    #     if you['recommendation'] < 20:
+    #         you["recommendation"] = 20
+    #     fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=you['recommendation'])
+    #     scatter_chart = st.plotly_chart(fig, use_container_width=True)
+    #     time.sleep(0.1)
 
 
 
