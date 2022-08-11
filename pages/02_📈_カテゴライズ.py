@@ -19,6 +19,20 @@ from vega_datasets import data
 
 
 def main():
+    # アンケートの結果を格納する
+    if 'user_questionnaire_results' not in st.session_state:
+        st.session_state['user_questionnaire_results'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    if 'personalized_user_information' not in st.session_state:
+        st.session_state['personalized_user_information'] = {"x": 0, "y": 0, "size": 0}
+    if 'num' not in st.session_state:
+        st.session_state['num'] = 0
+    #  アンケート結果を格納する
+    if 'additional_user_questionnaire_results' not in st.session_state:
+        st.session_state['additional_user_questionnaire_results'] =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    if 'submit_results' not in st.session_state:
+        st.session_state['submit_results'] = False
+    if 'display_times' not in st.session_state:
+        st.session_state['display_times'] = 0
 
     # 消去予定
     # source = data.cars()
@@ -26,20 +40,6 @@ def main():
     # print("Hello, world!")
     # print(source.index)
 
-
-
-
-
-
-
-
-    if 'personalized_user_information' not in st.session_state:
-        st.session_state['personalized_user_information'] = {"x": 0, "y": 0, "size": 0}
-    if 'num' not in st.session_state:
-        st.session_state['num'] = 0
-    #  アンケート結果を格納する
-    if 'user_questionnaire_results' not in st.session_state:
-        st.session_state['user_questionnaire_results'] = {}
 
     st.title('カテゴライズ')
 
@@ -166,12 +166,6 @@ def main():
 
 
 
-
-
-
-
-
-
     you = {'industry':'you','company_name':'Takuya','x':0,'y':0,'employee_number':0,'sales':0,'recommendation':350}
     df_user = df.append(you, ignore_index=True)
     for q in range(10):
@@ -180,29 +174,27 @@ def main():
         you["recommendation"] += 10*q
         df_user = df_user.append(you, ignore_index=True)
 
-    # for i in df_user.index:
-    #     if i <= len(df):
-    #         data_to_be_added = df_user.iloc[0: i + 1, :]
-    #         x = alt.Chart(data_to_be_added).mark_circle(size=100).encode(x='x', y='y', color='industry').interactive()
-    #         print(i)
-    #         chart.altair_chart(x, use_container_width=True)
-    #     else:
-    #         data_to_be_added = df_user.iloc[0: i + 1, :]
-    #         x = alt.Chart(data_to_be_added).mark_circle(size=1000).encode(x='x', y='y', color='industry').interactive()
-    #     chart.altair_chart(x, use_container_width=True)
-
-
-
-
-    print(df_user.index)
-    print(type(df_user.index))
-    print("aaaaaaaaaaaaaaaa")
-    print(len(df_user))
     for i in df_user.index:
-        data_to_be_added = df_user.iloc[0: i + 1, :]
-        x = alt.Chart(data_to_be_added).mark_circle(size=1000).encode(x='x', y='y', color='industry').interactive()
-        time.sleep(0.2)
+        if i <= len(df):
+            data_to_be_added = df_user.iloc[0: i + 1, :]
+            x = alt.Chart(data_to_be_added).mark_circle(size=100).encode(x='x', y='y', color='industry').interactive()
+            print(i)
+            chart.altair_chart(x, use_container_width=True)
+        else:
+            data_to_be_added = df_user.iloc[0: i + 1, :]
+            x = alt.Chart(data_to_be_added).mark_circle(size=1000).encode(x='x', y='y', color='industry').interactive()
         chart.altair_chart(x, use_container_width=True)
+
+
+    # print(df_user.index)
+    # print(type(df_user.index))
+    # print("aaaaaaaaaaaaaaaa")
+    # print(len(df_user))
+    # for i in df_user.index:
+    #     data_to_be_added = df_user.iloc[0: i + 1, :]
+    #     x = alt.Chart(data_to_be_added).mark_circle(size=1000).encode(x='x', y='y', color='industry').interactive()
+    #     time.sleep(0.2)
+    #     chart.altair_chart(x, use_container_width=True)
 
 
 

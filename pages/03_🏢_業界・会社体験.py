@@ -8,28 +8,32 @@ import csv
 
 
 def main():
-    industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
-    experience = "未選択"
-    if 'experience_feedback' not in st.session_state:
-        st.session_state['experience_feedback'] = False
+    # アンケートの結果を格納する
+    if 'user_questionnaire_results' not in st.session_state:
+        st.session_state['user_questionnaire_results'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    if 'personalized_user_information' not in st.session_state:
+        st.session_state['personalized_user_information'] = {"x": 0, "y": 0, "size": 0}
+    if 'num' not in st.session_state:
+        st.session_state['num'] = 0
+    #  アンケート結果を格納する
+    if 'additional_user_questionnaire_results' not in st.session_state:
+        st.session_state['additional_user_questionnaire_results'] =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     if 'submit_results' not in st.session_state:
         st.session_state['submit_results'] = False
     if 'display_times' not in st.session_state:
         st.session_state['display_times'] = 0
 
+    industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
+    experience = "未選択"
+
     # 体験のフィードバックを送信後に表示する
     if st.session_state['submit_results']:
-        st.title('提出しました．あなたの評価軸がさらに個人最適化されています．確認してみてください')
-
-    # print(st.session_state['submit_results'])
+        st.title('提出しました．あなたの評価軸がさらに個人最適化されています．確認してみてください．')
 
     if st.session_state['submit_results'] == False:
-
-
         st.title('業界・会社体験！')
         st.write('ここでは，業界の実際の様子をゲームを通じて体験したり，企業の実際の様子をインターンシップを通じて体験することができます')
         st.write('どの手段で体験しますか？')
-
         experience= st.selectbox('どの手段で体験しますか',("未選択", "業界の実際の様子をゲームを通じて体験する", "業界の実際の様子をVRを通じて体験する", "企業の実際の様子をインターンシップを通じて体験する"), key="30", index=0)
 
         if experience == "業界の実際の様子をゲームを通じて体験する":
