@@ -56,7 +56,7 @@ def main():
     st.session_state['user_questionnaire_results'][i] = option_list.index(option)
 
     i = 4
-    option_list = ["未選択", ""]
+    option_list = ["未選択", "あ","い"]
     option = (st.selectbox('？',(option_list[0], option_list[1], option_list[2]), key=i, index=st.session_state['user_questionnaire_results'][i]))
     st.session_state['user_questionnaire_results'][i] = option_list.index(option)
 

@@ -6,7 +6,6 @@ from matplotlib import pyplot as plt
 from PIL import Image
 import csv
 
-
 def main():
     # アンケートの結果を格納する
     if 'user_questionnaire_results' not in st.session_state:
