@@ -34,7 +34,6 @@ def main():
     industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
     industry = st.selectbox('業界選択',("未選択",industry_list[0], industry_list[1],industry_list[2], industry_list[3],industry_list[4], industry_list[5]), key="3", index=0)
     company_name=st.text_input('会社名検索')
-    print(company_name)
 
     # 業界・会社選択することで，表示するバブルを指定できる
     if industry != '未選択':
@@ -59,7 +58,6 @@ def main():
     # 自己分析からのフィードバック数を調べる
     if 'user_questionnaire_results' in st.session_state:
         for i in st.session_state['user_questionnaire_results']:
-            print(i)
             if i != 1 and i != 0:
                 feedbacked_info_number += 1
     # 会社体験からのフィードバック数を調べる

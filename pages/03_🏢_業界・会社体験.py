@@ -134,7 +134,6 @@ def main():
 
     # 体験のフィードバック
     if experience != "未選択" and experience != "企業の実際の様子をインターンシップを通じて体験する":
-        # print("1false1")
         quit_experience = st.checkbox("体験を途中でやめる", key="35")
         # 体験のフィードバックを得る
         if quit_experience:
