@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-# 質問を作成する
-#質問と選択肢が入ったリストをもらい，選択肢を作成し，解答を返す
+# 質問を作成する関数
+# 質問と選択肢が入ったリストをもらい，選択肢を作成し，解答を返す
 def app(question, key, index = 1):
     # question[0]は質問のため，inndexの位置がずれる．それを修正する必要がある
     index -= 1
