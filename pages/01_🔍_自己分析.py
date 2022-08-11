@@ -1,4 +1,5 @@
 import streamlit as st
+from apps import generate_question
 
 def main():
     # アンケートの結果を格納する
@@ -55,15 +56,31 @@ def main():
     option = (st.selectbox('どの程度の英語力がありますか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4]), key=i, index=st.session_state['user_questionnaire_results'][i]))
     st.session_state['user_questionnaire_results'][i] = option_list.index(option)
 
-    i = 4
+    i = 9
     option_list = ["未選択", "あ","い"]
     option = (st.selectbox('？',(option_list[0], option_list[1], option_list[2]), key=i, index=st.session_state['user_questionnaire_results'][i]))
     st.session_state['user_questionnaire_results'][i] = option_list.index(option)
 
+    i = 4
+    option_list = ['？', "未選択", "あ","い"]
+    option = generate_question.app(option_list, i,st.session_state['user_questionnaire_results'][i])
+    # option = (st.selectbox('？',(option_list[0], option_list[1], option_list[2]), key=i, index=st.session_state['user_questionnaire_results'][i]))
+    st.session_state['user_questionnaire_results'][i] = option_list.index(option) - 1
+    print(st.session_state['user_questionnaire_results'][i])
+    print(option)
+
     i = 5
-    option_list = ["未選択", "600点以下", "600点以上700点以下", "700点以上800点以下", "800点以上900点以下", "900点以上"]
-    option = (st.selectbox('TOIECの点数は何点ですか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4], option_list[5]), key=i, index=st.session_state['user_questionnaire_results'][i]))
+    option_list = ['TOIECの点数は何点ですか？',"未選択", "600点以下", "600点以上700点以下", "700点以上800点以下", "800点以上900点以下", "900点以上"]
+    option = generate_question.app(option_list, i + 10, st.session_state['user_questionnaire_results'][i])
     st.session_state['user_questionnaire_results'][i] = option_list.index(option)
+    print(st.session_state['user_questionnaire_results'][i])
+    print(option)
+    print(option_list[i])
+
+
+    # option_list = ["未選択", "600点以下", "600点以上700点以下", "700点以上800点以下", "800点以上900点以下", "900点以上"]
+    # option = (st.selectbox('TOIECの点数は何点ですか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4], option_list[5]), key=i, index=st.session_state['user_questionnaire_results'][i]))
+    # st.session_state['user_questionnaire_results'][i] = option_list.index(option)
 
 
 

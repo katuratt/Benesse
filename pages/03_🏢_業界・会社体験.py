@@ -6,21 +6,37 @@ from matplotlib import pyplot as plt
 from PIL import Image
 import csv
 
+
+from apps import generate_question
+
 def main():
+    #csvファイルから，追加の質問のデータを読み込み
+    path_additional_questions = "data/additional_questions.csv"
+    with open(path_additional_questions, 'r', encoding='utf_8') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        additional_question_list = list(csv_reader)
+    # print(additional_question_list)
+    # print(additional_question_list[0])
+    # print(additional_question_list[0][0])
+
+
     # アンケートの結果を格納する
     if 'user_questionnaire_results' not in st.session_state:
-        st.session_state['user_questionnaire_results'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        st.session_state['user_questionnaire_results'] = np.zeros(15, dtype=int)
     if 'personalized_user_information' not in st.session_state:
         st.session_state['personalized_user_information'] = {"x": 0, "y": 0, "size": 0}
     if 'num' not in st.session_state:
         st.session_state['num'] = 0
     #  アンケート結果を格納する
     if 'additional_user_questionnaire_results' not in st.session_state:
-        st.session_state['additional_user_questionnaire_results'] =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        st.session_state['additional_user_questionnaire_results'] =  np.zeros(len(additional_question_list), dtype=int)
     if 'submit_results' not in st.session_state:
         st.session_state['submit_results'] = False
     if 'display_times' not in st.session_state:
         st.session_state['display_times'] = 0
+    if 'radar_list' not in st.session_state:
+        st.session_state['radar_list'] = []
+
 
     industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
     experience = "未選択"
@@ -103,7 +119,7 @@ def main():
             company_name = st.selectbox('企業選択',("未選択",company_list[0], company_list[1],company_list[2], company_list[3],company_list[4], company_list[5]), key="33", index=0)
             if company_name != "未選択":
                 message = company_name + "のインターンシップに応募しますか？"
-                option_internship = st.radio(message, ("応募しない", "応募する"), index=0, key= 30, horizontal=True)
+                option_internship = st.radio(message, ("応募しない", "応募する"), index=0, key= 34, horizontal=True)
                 if option_internship == "応募する":
                     #csvよりデータを取得
                     path_user_data = "data/user_data.csv"
@@ -137,29 +153,35 @@ def main():
     # 体験のフィードバック
     if experience != "未選択":
         # print("1false1")
-        quit_experience = st.checkbox("体験を途中でやめる", key="30002")
+        quit_experience = st.checkbox("体験を途中でやめる", key="35")
         # 体験のフィードバックを得る
         if quit_experience:
             st.title('業界・会社体験を評価しよう')
-            st.write('以下の質問に答え，自己分析の精度を高めよう．')
+            st.write('以下の質問に答え，個人最適化の精度を高めよう．')
 
-            #質問の数の0を要素にもつリストを作成する
-            option_list_feedback = [0,0,0]
-            #i問目の質問
             i = 0
-            option_list = ["未選択", "就職したくなった", "少し就職したくなった", "変わらなかった", "少し就職したくなくなった", "就職したくなくなった"]
-            option= st.selectbox('体験を通じて本業界・企業に就職したいという思いは強くなりましたか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4]), key="300", index=0)
-            option_list_feedback[i] = option_list.index(option)
+            option = generate_question.app(additional_question_list[i], i + 300, 1)
+            st.session_state['additional_user_questionnaire_results'][i] = additional_question_list[i].index(option)
 
-            #TODO: 質問を増やす
+            if st.session_state['additional_user_questionnaire_results'][0] == 4 or st.session_state['additional_user_questionnaire_results'][0] == 5:
+                i = 3
+                option = generate_question.app(additional_question_list[i], i + 300, 1)
+                st.session_state['additional_user_questionnaire_results'][i] = additional_question_list[i].index(option)
+                st.session_state['radar_list'].append(option)
+            else:
+                i = 1
+                option = generate_question.app(additional_question_list[i], i + 300, 1)
+                st.session_state['additional_user_questionnaire_results'][i] = additional_question_list[i].index(option)
+            if st.session_state['additional_user_questionnaire_results'][1] == 4 or st.session_state['additional_user_questionnaire_results'][1] == 5:
+                i = 2
+                option = generate_question.app(additional_question_list[i], i + 300, 1)
+                st.session_state['additional_user_questionnaire_results'][i] = additional_question_list[i].index(option)
+                st.session_state['radar_list'].append(option)
 
-            st.session_state['submit_results'] = st.checkbox("上記内容で自己分析を提出する", key="3000001")
-
-
+            st.session_state['submit_results'] = st.checkbox("上記内容で自己分析を提出する", key="36")
 
 
     if st.session_state['submit_results']:
-        #TODO: 画面切り替え後に，以下の文章を書かない
         # streamlitでは，毎回，最初からプログラムが再実行されます．プログラムの下から上に影響を与えることは困難と考えたため，session_stateを使用し，以下のようにしています．
         message = "本当に提出してよろしいですか"
         if st.session_state['display_times'] == 0:
@@ -169,7 +191,7 @@ def main():
             st.session_state['display_times'] = 0
             display = True
 
-        change_to_false = st.checkbox(message, key="300001", disabled=display)
+        change_to_false = st.checkbox(message, key="37", disabled=display)
         if change_to_false:
             st.session_state['submit_results'] = False
 

@@ -1,26 +1,22 @@
 import streamlit as st
-from apps import test_app, test2_app
+from apps import generate_question
 
 def main():
+    if 'personally_identifiable_information_licensing' not in st.session_state:
+        st.session_state['personally_identifiable_information_licensing'] = 0
     # 以下をサイドバーに表示
-    a = st.sidebar.text_input("文字入力欄") #引数に入力内容を渡せる
+    personally_identifiable_information_licensing = st.sidebar.radio("あなたの就職情報を将来の就活生に使用しても良いですか？", ("使用しない", "使用して良い"),index=st.session_state['personally_identifiable_information_licensing'])
+    if personally_identifiable_information_licensing == "使用しない":
+        st.session_state['personally_identifiable_information_licensing'] = 0
+    elif personally_identifiable_information_licensing == "使用して良い":
+        st.session_state['personally_identifiable_information_licensing'] = 1
+    st.sidebar.write("個人情報は匿名化され，特定は不可能なように扱われます．")
 
+    st.title("就活での「本質的な評価軸」を個人最適化する就活支援サービスです．")
+    st.write('個人最適化された自己分析手法をもとに，あなたをカテゴライズし，あなたに近い就活生がどの企業を対象に就活していたかをお伝えします．')
+    st.write('個人最適化された自己分析，過去の事例からの情報，VRやゲーム，インターンシップの体験を通じて，企業への理解だけでなく，あなた自身を理解することをお手伝いします．')
+    st.write('このサービスを続け，自分を深く知り，「本質的な評価軸」を得て，就活を成功させましょう！')
 
-
-    # Streamlit が対応している任意のオブジェクトを可視化する (ここでは文字列)
-    st.write('Hello, World!')
-    st.title("hello")
-
-    check = st.checkbox("チェックボックス", key="1") #引数に入れることでboolを返す
-    st.button("ボタン", key="2") #引数に入れるとboolで返す
-    # st.selectbox("メニューリスト", ("選択肢1", "選択肢2", "選択肢3")) #第一引数：リスト名、第二引数：選択肢
-    # st.multiselect("メニューリスト（複数選択可）", ("選択肢1", "選択肢2", "選択肢3")) #第一引数：リスト名、第二引数：選択肢、複数選択可
-    # st.radio("ラジオボタン", ("選択肢1", "選択肢2", "選択肢3")) #第一引数：リスト名（選択肢群の上に表示）、第二引数：選択肢
-    # st.text_input("文字入力欄") #引数に入力内容を渡せる
-
-
-    # test_app.app()
-    # test2_app.app()
 
 if __name__ == '__main__':
     main()

@@ -27,6 +27,8 @@ def main():
         st.session_state['submit_results'] = False
     if 'display_times' not in st.session_state:
         st.session_state['display_times'] = 0
+    if 'radar_list' not in st.session_state:
+        st.session_state['radar_list'] = []
 
     st.title('カテゴライズ')
 
@@ -127,16 +129,21 @@ def main():
     st.title('個人最適化された評価軸')
     st.write('値が大きな軸があなたが就職する会社を決める際の最適な評価軸です．')
     radar_list = []
-    theta_list = ['やりがい','裁量権','成長環境','企画', '福利厚生']
+    theta_list = ['やりがい','裁量権','成長環境','社会貢献', '福利厚生']
     for i in theta_list:
         if i == "福利厚生":
-            radar_list.append(1)
+            radar_list.append(0.5)
         else:
-            radar_list.append(random.randint(1,5))
+            radar_list.append(random.randint(1,4))
+    # 企業体験からのフィードバックを反映させる
+    for i in st.session_state['radar_list']:
+        for j in range(len(theta_list)):
+            if theta_list[j] in i:
+                radar_list[j] = 5.0
+
     df = pd.DataFrame(dict(r=radar_list, theta=theta_list))
     fig_radar = px.line_polar(df, r='r', theta='theta', line_close=True)
     st.plotly_chart(fig_radar, use_container_width=True)
-
 
 if __name__ == '__main__':
     main()
