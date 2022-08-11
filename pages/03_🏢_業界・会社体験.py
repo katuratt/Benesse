@@ -15,16 +15,13 @@ def main():
         csv_reader = csv.reader(csv_file)
         additional_question_list = list(csv_reader)
 
-    # アンケートの結果を格納する
-    if 'user_questionnaire_results' not in st.session_state:
-        st.session_state['user_questionnaire_results'] = np.zeros(15, dtype=int)
-    if 'personalized_user_information' not in st.session_state:
-        st.session_state['personalized_user_information'] = {"x": 0, "y": 0, "size": 0}
-    if 'num' not in st.session_state:
-        st.session_state['num'] = 0
     #  アンケート結果を格納する
     if 'additional_user_questionnaire_results' not in st.session_state:
-        st.session_state['additional_user_questionnaire_results'] =  np.zeros(len(additional_question_list), dtype=int)
+        additional_user_questionnaire_results_ =  np.zeros(len(additional_question_list), dtype=int)
+        additional_user_questionnaire_results = []
+        for i in additional_user_questionnaire_results_:
+            additional_user_questionnaire_results.append(i.item())
+        st.session_state['additional_user_questionnaire_results'] = additional_user_questionnaire_results
     if 'submit_results' not in st.session_state:
         st.session_state['submit_results'] = False
     if 'display_times' not in st.session_state:

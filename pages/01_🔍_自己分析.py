@@ -1,88 +1,38 @@
 import streamlit as st
+import csv
+import numpy as np
+
 from apps import generate_question
 
 def main():
-    # アンケートの結果を格納する
+    #csvファイルから，質問のデータを読み込みquestion_listに格納
+    path_questions = "data/questions.csv"
+    with open(path_questions, 'r', encoding='utf_8') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        questions = list(csv_reader)
+    question_list = []
+    for question in questions:
+        question_ = []
+        for j in question:
+            if len(j) > 0:
+                question_.append(j)
+        question_list.append(question_)
+
+    # アンケートの結果を格納する場所を準備
     if 'user_questionnaire_results' not in st.session_state:
-        st.session_state['user_questionnaire_results'] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    if 'personalized_user_information' not in st.session_state:
-        st.session_state['personalized_user_information'] = {"x": 0, "y": 0, "size": 0}
-    if 'num' not in st.session_state:
-        st.session_state['num'] = 0
-    #  アンケート結果を格納する
-    if 'additional_user_questionnaire_results' not in st.session_state:
-        st.session_state['additional_user_questionnaire_results'] =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    if 'submit_results' not in st.session_state:
-        st.session_state['submit_results'] = False
-    if 'display_times' not in st.session_state:
-        st.session_state['display_times'] = 0
+        user_questionnaire_results_ = np.zeros(len(question_list), dtype=int)
+        user_questionnaire_results = []
+        for i in user_questionnaire_results_:
+            user_questionnaire_results.append(i.item())
+        st.session_state['user_questionnaire_results'] = user_questionnaire_results
 
     st.title('自己分析をしよう!')
     st.write('自分の当てはまる項目を選んでください．途中で抜けることも簡単にできます．')
 
-    #TODO: 質問を増やす
-
-    # i問目の質問
-    # 希望条件に関する質問
-    i = 0
-    option_list = ["未選択", "北海道", "東北", "関東", "中部", "近畿", "中国", "四国", "九州", "沖縄"]
-    option = (st.selectbox('勤務地はどこを希望しますか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4], option_list[5], option_list[6], option_list[7], option_list[8], option_list[9]), key=i, index=st.session_state['user_questionnaire_results'][i]))
-    st.session_state['user_questionnaire_results'][i] = option_list.index(option)
-
-    # 経験に関する質問
-    i = 1
-    option_list = ["未選択", "研究", "勉学", "ゼミ活動", "アルバイト", "サークル活動", "留学"]
-    option = (st.selectbox('大学生活で最も力を入れたものは，この中では何ですか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4], option_list[5], option_list[6]), key=i, index=st.session_state['user_questionnaire_results'][i]))
-    st.session_state['user_questionnaire_results'][i] = option_list.index(option)
-
-    # パーソナリティに関する質問
-    i = 0
-    option_list = ["未選択", "一人で過ごすことが多い", "どちらかというと一人で過ごすことが多い", "どちらかというと友達と過ごすことが多い", "友達と過ごすことが多い"]
-    option = (st.selectbox('休日はどのように過ごすことが多いですか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4]), key=i, index=st.session_state['user_questionnaire_results'][i]))
-    st.session_state['user_questionnaire_results'][i] = option_list.index(option)
-
-    i = 1
-    option_list = ["未選択", "待てない", "10分まで", "30分まで", "1時間まで", "1時間以上"]
-    option = (st.selectbox('友達が遅刻した時，何分までなら待てますか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4], option_list[5]), key=i, index=st.session_state['user_questionnaire_results'][i]))
-    st.session_state['user_questionnaire_results'][i] = option_list.index(option)
-
-    i = 2
-    option_list = ["未選択", "未経験", "2年以下","2年以上5年以下","5年以上8年以下","8年以上"]
-    option = (st.selectbox('どの程度のプログラミング歴がありますか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4], option_list[5]), key=i, index=st.session_state['user_questionnaire_results'][i]))
-    st.session_state['user_questionnaire_results'][i] = option_list.index(option)
-
-    i = 3
-    option_list = ["未選択", "全く話せない", "日常会話レベル","ビジネス会話程度","ネイティブレベル"]
-    option = (st.selectbox('どの程度の英語力がありますか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4]), key=i, index=st.session_state['user_questionnaire_results'][i]))
-    st.session_state['user_questionnaire_results'][i] = option_list.index(option)
-
-    i = 9
-    option_list = ["未選択", "あ","い"]
-    option = (st.selectbox('？',(option_list[0], option_list[1], option_list[2]), key=i, index=st.session_state['user_questionnaire_results'][i]))
-    st.session_state['user_questionnaire_results'][i] = option_list.index(option)
-
-    i = 4
-    option_list = ['？', "未選択", "あ","い"]
-    option = generate_question.app(option_list, i,st.session_state['user_questionnaire_results'][i])
-    # option = (st.selectbox('？',(option_list[0], option_list[1], option_list[2]), key=i, index=st.session_state['user_questionnaire_results'][i]))
-    st.session_state['user_questionnaire_results'][i] = option_list.index(option) - 1
-    print(st.session_state['user_questionnaire_results'][i])
-    print(option)
-
-    i = 5
-    option_list = ['TOIECの点数は何点ですか？',"未選択", "600点以下", "600点以上700点以下", "700点以上800点以下", "800点以上900点以下", "900点以上"]
-    option = generate_question.app(option_list, i + 10, st.session_state['user_questionnaire_results'][i])
-    st.session_state['user_questionnaire_results'][i] = option_list.index(option)
-    print(st.session_state['user_questionnaire_results'][i])
-    print(option)
-    print(option_list[i])
-
-
-    # option_list = ["未選択", "600点以下", "600点以上700点以下", "700点以上800点以下", "800点以上900点以下", "900点以上"]
-    # option = (st.selectbox('TOIECの点数は何点ですか？',(option_list[0], option_list[1], option_list[2], option_list[3], option_list[4], option_list[5]), key=i, index=st.session_state['user_questionnaire_results'][i]))
-    # st.session_state['user_questionnaire_results'][i] = option_list.index(option)
-
-
+    # 希望条件・経験・パーソナリティ・スキルに関する質問をメインに行う
+    for i in range(len(question_list)):
+        option = generate_question.app(question_list[i], i, st.session_state['user_questionnaire_results'][i])
+        st.session_state['user_questionnaire_results'][i] = question_list[i].index(option)
 
 if __name__ == '__main__':
     main()
