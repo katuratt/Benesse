@@ -99,9 +99,9 @@ def main():
     print(feedbacked_info_number)
 
     #TODO:大きさの調節
-    user_data['x'] = 350
-    user_data['y'] = 400
-    user_data["recommendation"] = 300
+    user_data['x'] = min(200 + (feedbacked_info_number ** 2) * 10, 550)
+    user_data['y'] = min(150 + feedbacked_info_number * 30, 400)
+    user_data["recommendation"] = max(30, 750 - feedbacked_info_number * 100)
     df_user = df.append(user_data, ignore_index=True)
     fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=user_data['recommendation'])
     st.plotly_chart(fig, use_container_width=True)
