@@ -38,7 +38,7 @@ def main():
         st.title('提出しました．あなたの評価軸がさらに個人最適化されています．確認してみてください．')
 
     if st.session_state['submit_results'] == False:
-        st.title('業界・会社体験！')
+        st.title('業界・企業体験！')
         st.write('ここでは，業界の実際の様子をゲームを通じて体験したり，企業の実際の様子をインターンシップを通じて体験することができます')
         st.write('どの手段で体験しますか？')
         experience= st.selectbox('どの手段で体験しますか',("未選択", "業界の実際の様子をゲームを通じて体験する", "業界の実際の様子をVRを通じて体験する", "企業の実際の様子をインターンシップを通じて体験する"), key="30", index=0)
@@ -49,7 +49,7 @@ def main():
             #TODO: 業界を個人最適化して並べ替える
             personalized_industry_list = industry_list
 
-            industry = st.selectbox('業種選択',("未選択",personalized_industry_list[0], personalized_industry_list[1],personalized_industry_list[2], personalized_industry_list[3],personalized_industry_list[4], personalized_industry_list[5]), key="31", index=0)
+            industry = st.selectbox('業界選択',("未選択",personalized_industry_list[0], personalized_industry_list[1],personalized_industry_list[2], personalized_industry_list[3],personalized_industry_list[4], personalized_industry_list[5]), key="31", index=0)
 
             if industry != "未選択":
                 message = "ゲームを通じて" + industry + "業界の体験をしよう"
@@ -78,7 +78,7 @@ def main():
             #TODO: 業界を個人最適化して並べ替える
             personalized_industry_list = industry_list
 
-            industry = st.selectbox('業種選択',("未選択",personalized_industry_list[0], personalized_industry_list[1],personalized_industry_list[2], personalized_industry_list[3],personalized_industry_list[4], personalized_industry_list[5]), key="32", index=0)
+            industry = st.selectbox('業界選択',("未選択",personalized_industry_list[0], personalized_industry_list[1],personalized_industry_list[2], personalized_industry_list[3],personalized_industry_list[4], personalized_industry_list[5]), key="32", index=0)
             if industry != "未選択":
                 message = "ゲームを通じて" + industry + "業界の体験をしよう"
                 st.write(message)
@@ -137,7 +137,7 @@ def main():
         quit_experience = st.checkbox("体験を途中でやめる", key="35")
         # 体験のフィードバックを得る
         if quit_experience:
-            st.title('業界・会社体験を評価しよう')
+            st.title('業界・企業体験を評価しよう')
             st.write('以下の質問に答え，個人最適化の精度を高めよう．')
 
             i = 0

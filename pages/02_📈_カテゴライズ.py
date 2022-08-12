@@ -20,7 +20,7 @@ def main():
     st.write('あなたの円の中に入っている企業が，個人最適化された評価軸で最適とされた企業です．')
     st.write('あなたの円が大きい場合は，自己分析を進めて，あなたの円を小さくしていきましょう．')
 
-    # 会社データの読み込み
+    # 企業データの読み込み
     path_company_data = 'data/company_data.csv'
     df = pd.read_csv(path_company_data)
 
@@ -29,19 +29,19 @@ def main():
     user_data = {'industry':'you','company_name':'Takuya','x':300,'y':200,'employee_number':0,'sales':0,'recommendation':350}
 
 
-    #業種を選ぶと，その業種のみを表示する
-    #会社名を入力すると，その会社にラベルをつけて表示させることができる．
+    #業界を選ぶと，その業界のみを表示する
+    #企業名を入力すると，その企業にラベルをつけて表示させることができる．
     industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
     industry = st.selectbox('業界選択',("未選択",industry_list[0], industry_list[1],industry_list[2], industry_list[3],industry_list[4], industry_list[5]), key="3", index=0)
-    company_name=st.text_input('会社名検索')
+    company_name=st.text_input('企業名検索')
 
-    # 業界・会社選択することで，表示するバブルを指定できる
+    # 業界・企業選択することで，表示するバブルを指定できる
     if industry != '未選択':
         df = df[df['industry'] == industry]
     if len(company_name) != 0:
         df_ = df[df['company_name'] == company_name]
         if len(df_) == 0:
-            st.write('入力した会社名が間違っています．')
+            st.write('入力した企業名が間違っています．')
 
 
     #散布図を書く
@@ -60,7 +60,7 @@ def main():
         for i in st.session_state['user_questionnaire_results']:
             if i != 1 and i != 0:
                 feedbacked_info_number += 1
-    # 会社体験からのフィードバック数を調べる
+    # 企業体験からのフィードバック数を調べる
     if 'additional_user_questionnaire_results' in st.session_state:
         for i in st.session_state['additional_user_questionnaire_results']:
             if i != 0 and i != 1:
@@ -69,12 +69,12 @@ def main():
     #フィードバックに従い，円の大きさが変化する
     user_data['x'] = min(200 + (feedbacked_info_number ** 2) * 10, 550)
     user_data['y'] = min(150 + feedbacked_info_number * 30, 400)
-    user_data["recommendation"] = max(30, 750 - feedbacked_info_number * 100)
+    user_data["recommendation"] = max(40, 750 - feedbacked_info_number * 100) - feedbacked_info_number
     df_user = df.append(user_data, ignore_index=True)
     fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=user_data['recommendation'])
 
 
-    # 会社名検索を行った際は，その会社にラベルをつけて表示する
+    # 企業名検索を行った際は，その企業にラベルをつけて表示する
     if len(company_name) != 0 and len(df[df['company_name'] == company_name]) != 0:
         fig.add_annotation(
             x=df_user.iloc[0,2],
@@ -106,7 +106,7 @@ def main():
 
     #レーダーチャートの表示
     st.title('個人最適化された評価軸')
-    st.write('値が大きな軸があなたが就職する会社を決める際の最適な評価軸です．')
+    st.write('値が大きな軸があなたが就職する企業を決める際の最適な評価軸です．')
     radar_list = []
     theta_list = ['やりがい','裁量権','成長環境','社会貢献', '福利厚生']
     for i in theta_list:
