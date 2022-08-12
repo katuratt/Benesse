@@ -8,7 +8,6 @@ from sklearn.datasets import load_boston
 import csv
 import plotly.graph_objects as go
 import altair as alt
-from vega_datasets import data
 import random
 
 def main():
@@ -46,7 +45,6 @@ def main():
 
 
     #散布図を書く
-    st.sidebar.title('軸の設定')
     xmin = 0
     xmax = 1000
     ymin = 0
@@ -104,8 +102,8 @@ def main():
     # 企業名検索を行った際は，その企業にラベルをつけて表示する
     if len(company_name) != 0 and len(df[df['company_name'] == company_name]) != 0:
         fig.add_annotation(
-            x=df_user.iloc[0,2],
-            y=df_user.iloc[0,3],
+            x=df_.iloc[0,2],
+            y=df_.iloc[0,3],
             xref="x",
             yref="y",
             text=company_name,
