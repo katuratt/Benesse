@@ -69,21 +69,33 @@ def main():
 
     #フィードバックに従い，円の大きさが変化する
     if feedbacked_info_number <= 4:
-        user_data['x'] = 240 + feedbacked_info_number * 10
+        user_data['x'] = 540 + feedbacked_info_number * 10
         user_data['y'] = 300 + feedbacked_info_number * 25
         user_data["recommendation"] = 450 - feedbacked_info_number * 25
+    elif feedbacked_info_number == 5:
+        user_data['x'] = 600 - feedbacked_info_number * 10
+        user_data['y'] = 600 - feedbacked_info_number * 25
+        user_data["recommendation"] = 200
     elif feedbacked_info_number <= 6:
         user_data['x'] = 600 - feedbacked_info_number * 10
         user_data['y'] = 600 - feedbacked_info_number * 25
-        user_data["recommendation"] = 850 - feedbacked_info_number * 100
-    elif feedbacked_info_number <= 14:
+        user_data["recommendation"] = 200 - (feedbacked_info_number - 5) * 25
+    elif feedbacked_info_number == 7:
         user_data['x'] = 600 - feedbacked_info_number * 10
         user_data['y'] = 600 - feedbacked_info_number * 25
-        user_data["recommendation"] = 250 - (feedbacked_info_number - 6) * 15
+        user_data["recommendation"] = 120
+    elif feedbacked_info_number == 8:
+        user_data['x'] = 500
+        user_data['y'] = 500
+        user_data["recommendation"] = 60
+    elif feedbacked_info_number <= 14:
+        user_data['x'] = 500 + feedbacked_info_number
+        user_data['y'] = 500 + feedbacked_info_number
+        user_data["recommendation"] = 60 - (feedbacked_info_number - 8)
     else:
         user_data['x'] = 540 - 100 / (feedbacked_info_number - 7)
         user_data['y'] = 450 + 100 / (feedbacked_info_number -7)
-        user_data["recommendation"] = max(50 - feedbacked_info_number * 2, 20)
+        user_data["recommendation"] = max(20, 60 - (feedbacked_info_number - 8)*2)
 
     df_user = df.append(user_data, ignore_index=True)
     fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=user_data['recommendation'])
