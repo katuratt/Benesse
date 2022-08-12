@@ -47,7 +47,6 @@ def main():
         if experience == "業界の実際の様子をゲームを通じて体験する":
             st.write('業界の実際の様子をゲームを通じて体験しよう！')
             st.write('業界を選択してください．あなたに個人最適化された評価軸順に業界は並んでいます')
-            #TODO: 業界を個人最適化して並べ替える
             personalized_industry_list = industry_list
 
             industry = st.selectbox('業界選択',("未選択",personalized_industry_list[0], personalized_industry_list[1],personalized_industry_list[2], personalized_industry_list[3],personalized_industry_list[4], personalized_industry_list[5]), key="31", index=0)
@@ -55,7 +54,6 @@ def main():
             if industry != "未選択":
                 message = "ゲームを通じて" + industry + "業界の体験をしよう"
                 st.write(message)
-                #TODO: 写真の差し替え
                 # 注：全て使用しても良い写真を使っています．
                 if industry == "Education":
                     image = Image.open('data/education.png')
@@ -64,7 +62,7 @@ def main():
                 elif industry == "Manufacturing":
                     image = Image.open('data/education.png')
                 elif industry == "IT":
-                    image = Image.open('data/education.png')
+                    image = Image.open('data/it.png')
                 elif industry == "Mining":
                     image = Image.open('data/construction.png')
                 elif industry == "Finance":
@@ -76,7 +74,6 @@ def main():
         elif experience == "業界の実際の様子をVRを通じて体験する":
             st.write('業界の実際の様子をVRを通じて体験しよう！')
             st.write('業界を選択してください．あなたに個人最適化された評価軸順に業界は並んでいます')
-            #TODO: 業界を個人最適化して並べ替える
             personalized_industry_list = industry_list
 
             industry = st.selectbox('業界選択',("未選択",personalized_industry_list[0], personalized_industry_list[1],personalized_industry_list[2], personalized_industry_list[3],personalized_industry_list[4], personalized_industry_list[5]), key="32", index=0)
@@ -91,7 +88,7 @@ def main():
                 elif industry == "Manufacturing":
                     image = Image.open('data/education.png')
                 elif industry == "IT":
-                    image = Image.open('data/education.png')
+                    image = Image.open('data/it.png')
                 elif industry == "Mining":
                     image = Image.open('data/construction.png')
                 elif industry == "Finance":
