@@ -31,7 +31,8 @@ def main():
 
     #業界を選ぶと，その業界のみを表示する
     #企業名を入力すると，その企業にラベルをつけて表示させることができる．
-    industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
+    # industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
+    industry_list = ['Education', 'Construction', 'Mining','Manufacturing','Finance', 'IT']
     industry = st.selectbox('業界選択',("未選択",industry_list[0], industry_list[1],industry_list[2], industry_list[3],industry_list[4], industry_list[5]), key="3", index=0)
     company_name=st.text_input('企業名検索')
 
@@ -67,9 +68,23 @@ def main():
                 feedbacked_info_number += 1
 
     #フィードバックに従い，円の大きさが変化する
-    user_data['x'] = min(200 + (feedbacked_info_number ** 2) * 10, 550)
-    user_data['y'] = min(150 + feedbacked_info_number * 30, 400)
-    user_data["recommendation"] = max(40, 750 - feedbacked_info_number * 100) - feedbacked_info_number
+    if feedbacked_info_number <= 4:
+        user_data['x'] = 240 + feedbacked_info_number * 10
+        user_data['y'] = 300 + feedbacked_info_number * 25
+        user_data["recommendation"] = 450 - feedbacked_info_number * 25
+    elif feedbacked_info_number <= 6:
+        user_data['x'] = 600 - feedbacked_info_number * 10
+        user_data['y'] = 600 - feedbacked_info_number * 25
+        user_data["recommendation"] = 850 - feedbacked_info_number * 100
+    elif feedbacked_info_number <= 14:
+        user_data['x'] = 600 - feedbacked_info_number * 10
+        user_data['y'] = 600 - feedbacked_info_number * 25
+        user_data["recommendation"] = 250 - (feedbacked_info_number - 6) * 15
+    else:
+        user_data['x'] = 540 - 100 / (feedbacked_info_number - 7)
+        user_data['y'] = 450 + 100 / (feedbacked_info_number -7)
+        user_data["recommendation"] = max(50 - feedbacked_info_number * 2, 20)
+
     df_user = df.append(user_data, ignore_index=True)
     fig=px.scatter(df_user, x="x", y="y", size="recommendation", color="industry",hover_name="company_name",range_x=[xmin,xmax],range_y=[ymin,ymax],size_max=user_data['recommendation'])
 

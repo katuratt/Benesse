@@ -30,7 +30,8 @@ def main():
         st.session_state['radar_list'] = []
 
 
-    industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
+    # industry_list = ['Education', 'Agricultural','Mining','Manufacturing','Construction','Finance']
+    industry_list = ['Education', 'Construction', 'Mining','Manufacturing','Finance', 'IT']
     experience = "未選択"
 
     # 体験のフィードバックを送信後に表示する
@@ -62,7 +63,7 @@ def main():
                     image = Image.open('data/construction.png')
                 elif industry == "Manufacturing":
                     image = Image.open('data/education.png')
-                elif industry == "Agricultural":
+                elif industry == "IT":
                     image = Image.open('data/education.png')
                 elif industry == "Mining":
                     image = Image.open('data/construction.png')
@@ -89,7 +90,7 @@ def main():
                     image = Image.open('data/construction.png')
                 elif industry == "Manufacturing":
                     image = Image.open('data/education.png')
-                elif industry == "Agricultural":
+                elif industry == "IT":
                     image = Image.open('data/education.png')
                 elif industry == "Mining":
                     image = Image.open('data/construction.png')
@@ -103,8 +104,8 @@ def main():
         elif experience == "企業の実際の様子をインターンシップを通じて体験する":
             st.write('企業の実際の様子をインターンシップを通じて体験しよう！')
             st.write('企業を選択してください．あなたに個人最適化された評価軸順に企業は並んでいます')
-            #TODO: 企業を個人最適化して並べ替える
-            company_list = ["Beness","Aeness","Ceness","Deness","Eeness","Feness"]
+
+            company_list = ["Benesse","Aenesse","Cenesse","Denesse","Eenesse","Fenesse"]
 
             company_name = st.selectbox('企業選択',("未選択",company_list[0], company_list[1],company_list[2], company_list[3],company_list[4], company_list[5]), key="33", index=0)
             if company_name != "未選択":
